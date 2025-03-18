@@ -8,12 +8,12 @@
     
     <!-- Package Info -->
     <PackageId>GrpcEndpoints</PackageId>
-    <Version>0.1.0</Version>
-    <Authors>YourName</Authors>
-    <Company>YourCompany</Company>
+    <Version>0.2.0</Version>
+    <Authors>Vitalii Moiseenko</Authors>
+    <Company>Vitalii Moiseenko</Company>
     <Description>Streamline gRPC services with endpoint-based architecture for .NET</Description>
     <PackageTags>grpc;endpoints;dotnet;aspnetcore</PackageTags>
-    <RepositoryUrl>https://github.com/yourusername/GrpcEndpoints</RepositoryUrl>
+    <RepositoryUrl>https://github.com/foondook/GrpcEndpoints</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     
