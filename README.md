@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/GrpcEndpoints.svg)](https://www.nuget.org/packages/GrpcEndpoints)
 [![NuGet](https://img.shields.io/nuget/dt/GrpcEndpoints.svg)](https://www.nuget.org/packages/GrpcEndpoints)
-[![License](https://img.shields.io/github/license/foondook/GrpcEndpoints)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-9.0-512BD4)](https://www.nuget.org/packages/GrpcEndpoints)
 
 GrpcEndpoints is a lightweight framework that simplifies gRPC service implementation in .NET by using an endpoint-centric approach. It eliminates boilerplate code through attribute-based mapping and dynamic service generation, allowing developers to focus on implementing business logic rather than repetitive service scaffolding.
