@@ -41,4 +41,17 @@ public static class EndpointRouteBuilderExtensions
 
         return endpoints;
     }
+    
+    /// <summary>
+    /// Maps a dynamic gRPC service to endpoints.
+    /// </summary>
+    /// <typeparam name="TService">The gRPC service base type.</typeparam>
+    /// <param name="endpoints">The endpoint route builder.</param>
+    /// <returns>The endpoint route builder for chaining.</returns>
+    public static IEndpointRouteBuilder MapGrpcEndpoints<TService>(
+        this IEndpointRouteBuilder endpoints)
+        where TService : class
+    {
+        return MapGrpcEndpoints(endpoints, typeof(TService));
+    }
 } 

@@ -43,15 +43,14 @@ public class SayHello : IGrpcEndpoint<HelloRequest, HelloReply>
 
 ```csharp
 // Program.cs
-builder.Services.AddGrpcEndpoints(typeof(Program).Assembly);
-builder.Services.AddDynamicGrpcServices(typeof(Greeter.GreeterBase));
+builder.Services.AddGrpcEndpoints();
 ```
 
 ### 3. Map dynamic services
 
 ```csharp
 // Program.cs
-app.MapGrpcEndpoints(typeof(Greeter.GreeterBase));
+app.MapGrpcEndpoints<Greeter.GreeterBase>();
 ```
 
 ## License

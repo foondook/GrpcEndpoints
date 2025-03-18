@@ -7,14 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection(); 
 
-// Register gRPC endpoints
-builder.Services.AddGrpcEndpoints(typeof(Program).Assembly);
-builder.Services.AddDynamicGrpcServices(typeof(Greeter.GreeterBase));
+// Register gRPC endpoints and dynamic services
+builder.Services.AddGrpcEndpoints();
 
 var app = builder.Build();
 
 // Map services
 app.MapGrpcReflectionService();
-app.MapGrpcEndpoints(typeof(Greeter.GreeterBase));
+app.MapGrpcEndpoints<Greeter.GreeterBase>();
 
 app.Run();

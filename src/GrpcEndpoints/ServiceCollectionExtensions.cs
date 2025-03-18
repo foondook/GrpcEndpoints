@@ -9,7 +9,7 @@ namespace GrpcEndpoints;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Registers all gRPC endpoints from the specified assemblies.
+    /// Registers all gRPC endpoints from the specified assemblies and automatically registers dynamic gRPC service implementations.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="assemblies">The assemblies to scan for endpoints.</param>
@@ -25,7 +25,11 @@ public static class ServiceCollectionExtensions
         // Find and register all endpoint implementations
         var endpointTypes = assemblies
             .SelectMany(a => a.GetTypes())
-            .Where(t => t.GetCustomAttribute<GrpcEndpointAttribute>() != null);
+            .Where(t => t.GetCustomAttribute<GrpcEndpointAttribute>() != null)
+            .ToList();
+        
+        // Track service types that need dynamic implementations
+        var serviceTypes = new HashSet<Type>();
             
         foreach (var endpointType in endpointTypes)
         {
@@ -39,7 +43,25 @@ public static class ServiceCollectionExtensions
                 // Register the endpoint with its interface
                 services.AddScoped(serviceInterface, endpointType);
                 services.AddScoped(endpointType);
+                
+                // Get the service type from the attribute and track it
+                var attribute = endpointType.GetCustomAttribute<GrpcEndpointAttribute>();
+                if (attribute != null)
+                {
+                    serviceTypes.Add(attribute.ServiceType);
+                }
             }
+        }
+        
+        // Register dynamic service implementations for all discovered service types
+        foreach (var serviceType in serviceTypes)
+        {
+            // Use the existing method to register the dynamic service implementation
+            // We need to call this through reflection since it's a generic method
+            typeof(ServiceCollectionExtensions)
+                .GetMethod(nameof(AddDynamicGrpcService), BindingFlags.Public | BindingFlags.Static)
+                ?.MakeGenericMethod(serviceType)
+                .Invoke(null, new object[] { services });
         }
         
         return services;
@@ -59,5 +81,18 @@ public static class ServiceCollectionExtensions
         }
         
         return services;
+    }
+    
+    /// <summary>
+    /// Registers a dynamic gRPC service implementation for the specified service base type.
+    /// </summary>
+    /// <typeparam name="TService">The gRPC service base type.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The service collection for chaining.</returns>
+    public static IServiceCollection AddDynamicGrpcService<TService>(this IServiceCollection services)
+        where TService : class
+    {
+        return services.AddSingleton<TService>(sp => 
+            (TService)DynamicGrpcServiceFactory.CreateDynamicService(typeof(TService), sp));
     }
 } 
